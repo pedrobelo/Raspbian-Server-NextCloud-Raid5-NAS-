@@ -54,3 +54,13 @@ CREATE USER 'nextcloud'@'localhost' IDENTIFIED BY '${DATABASE_PASSWORD}';
 GRANT ALL PRIVILEGES ON nextclouddb.* TO 'nextcloud'@'localhost';
 FLUSH PRIVILEGES;
 MY_QUERY
+
+
+
+
+
+
+#Set SSL certificate
+sudo apt-get install certbot python-certbot-apache
+#review
+sudo certbot --apache
