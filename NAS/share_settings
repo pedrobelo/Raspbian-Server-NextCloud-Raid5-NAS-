@@ -1,0 +1,5 @@
+[nextcloud]
+	comment = nextcloud share
+	path = /dev/md0
+	read only = no
+	guest ok = yes
