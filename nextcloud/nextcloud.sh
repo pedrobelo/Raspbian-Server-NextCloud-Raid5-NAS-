@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Installing Nextcloud"
+exit
+
 NEXTCLOUD_DIRECTORY=/var/nextcloud/data #/media/usb #/dev/md0
 MYSQL_ROOT_PASSWORD=g9YSO786JM5u7VZjFXMt
 DATABASE_PASSWORD=z7cS1QF3UFttheMkcSou

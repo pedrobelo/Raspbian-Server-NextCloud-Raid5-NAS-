@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Creating RAID5 array"
+exit
 
 #install raid software
 sudo apt-get install mdadm

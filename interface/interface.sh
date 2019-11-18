@@ -3,7 +3,7 @@
 function drives_list {
 	disks=$(hwinfo --disk --short)
 	disk_f=$(echo ${disks} | sudo sed -e 's/^/ /g' -e 's/ [^/][^ ]*//g' -e 's/^ *//g')
-	return $disk_f
+	echo $disk_f
 }
 
 function raid5 (){
@@ -14,7 +14,7 @@ function raid5 (){
 
 	i=0
 	for word in $@; do 
-		OPTIONS+=(${word} "" "off")
+		options+=(${word} "" "off")
 	done
 
 
@@ -22,7 +22,7 @@ function raid5 (){
 		CHOICE=$(dialog --clear \
 				--checklist "$TITLE1" \
 				$HEIGHT $WIDTH $CHOICE_HEIGHT \
-				"${OPTIONS[@]}" \
+				"${options[@]}" \
 				2>&1 >/dev/tty)
 
 		if [ $? == 1 ]; then
@@ -40,14 +40,6 @@ function raid5 (){
 
 	done
 }
-
-
-CHOICE1=$(raid5 disk1 disk2 disk3)
-echo $CHOICE1
-exit
-
-sudo apt-get install dialog -y
-
 
 HEIGHT=15
 WIDTH=70
@@ -72,22 +64,24 @@ CHOICE=$(dialog --clear \
 
 case $CHOICE in
 		Full_Installation)
-			echo "You chose Option 1"
+			./../RAID5/create_array.sh $(raid5 $(drives_list))
+			./../NAS/setup_NAS.sh
+			./../nextcloud/nextcloud.sh
 			;;
 		Create_RAID5)
-			echo "You chose Option 2"
+			./../RAID5/create_array.sh $(raid5 $(drives_list))
 			;;
 		Add_disk)
-			echo "You chose Option 3"
+			./../RAID5/add_drive.sh $(raid5 $(drives_list))
 			;;
 		Remove_disk)
-			echo "You chose Option 3"
+			./../RAID5/remove_drive.sh $(raid5 $(drives_list))
 			;;
-		NAS)
-			echo "You chose Option 3"
+		Create_NAS)
+			./../NAS/setup_NAS.sh
 			;;
 		Install_Nextcloud)
-			echo "You chose Option 3"
+			./../nextcloud/nextcloud.sh
 			;;
 
 esac

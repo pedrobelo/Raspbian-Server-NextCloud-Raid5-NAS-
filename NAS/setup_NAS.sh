@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Installing NAS"
+exit
+
 #install samba
 sudo apt-get install samba
 
