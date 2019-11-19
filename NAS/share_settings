@@ -1,5 +1,8 @@
 [nextcloud]
-	comment = nextcloud share
-	path = /dev/md0
-	read only = no
-	guest ok = yes
+   comment = nextcloud share
+   path = /mnt/pedrosmmbelo/files
+   read only = no
+   guest ok = yes
+   browsable = yes
+   force user = www-data
+   force group = www-data

@@ -4,8 +4,6 @@ echo "Installing Nextcloud"
 exit
 
 NEXTCLOUD_DIRECTORY=/var/nextcloud/data #/media/usb #/dev/md0
-MYSQL_ROOT_PASSWORD=g9YSO786JM5u7VZjFXMt
-DATABASE_PASSWORD=z7cS1QF3UFttheMkcSou
 
 #do system updates
 sudo apt-get update -y
@@ -64,6 +62,9 @@ MY_QUERY
 
 
 #Set SSL certificate
-sudo apt-get install certbot python-certbot-apache
+sudo apt-get install certbot python-certbot-apache -y
 #review
 sudo certbot --apache
+
+#pedrosmmbelo@gmail.com\nA\nN\npedrosmmbelo.ddns.net
+#sudo -u www-data php /var/www/nextcloud/occ files:scan --all
