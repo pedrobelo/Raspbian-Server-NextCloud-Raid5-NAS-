@@ -56,15 +56,13 @@ GRANT ALL PRIVILEGES ON nextclouddb.* TO 'nextcloud'@'localhost';
 FLUSH PRIVILEGES;
 MY_QUERY
 
-
-
-
-
+#setup nextcloud account
+sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextclouddb"  --database-user "nextcloud" --database-pass "${DATABASE_PASSWORD}" --admin-user "${ADMIN}" --admin-pass "${ADMIN_PASSWORD}"
 
 #Set SSL certificate
-sudo apt-get install certbot python-certbot-apache -y
-#review
-sudo certbot --apache
+echo -e "${EMAIL}\nA\nN\n${DOMAIN}" | sudo apt-get install certbot python-certbot-apache -y 2>/dev/null
 
-#pedrosmmbelo@gmail.com\nA\nN\npedrosmmbelo.ddns.net
+#review
+echo -e "2\n" | sudo certbot --apache
+
 #sudo -u www-data php /var/www/nextcloud/occ files:scan --all
