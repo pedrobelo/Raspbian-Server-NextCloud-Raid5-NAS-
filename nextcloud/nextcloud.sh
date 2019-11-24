@@ -1,10 +1,5 @@
 #!/bin/bash
 
-echo "Installing Nextcloud"
-exit
-
-NEXTCLOUD_DIRECTORY=/var/nextcloud/data #/media/usb #/dev/md0
-
 #do system updates
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -15,7 +10,7 @@ sudo apt-get install apache2 mariadb-server libapache2-mod-php7.3 php7.3-gd php7
 #download nextcloud
 wget https://download.nextcloud.com/server/releases/nextcloud-17.0.1.tar.bz2
 sudo tar -xjf nextcloud-17.0.1.tar.bz2
-sudo cp -r nextcloud /var/www
+sudo cp -r nextcloud ${NEXTCLOUD_DIRECTORY}
 
 
 #set config file from apache2
@@ -39,16 +34,13 @@ sudo a2ensite default-ssl
 sudo service apache2 reload
 
 #change the ownership on your Nextcloud directories to your HTTP user
-sudo chown -R www-data:www-data /var/www/nextcloud/
+sudo chown -R www-data:www-data ${NEXTCLOUD_DIRECTORY}/nextcloud/
 
 
 #secure MariaDB
-echo -e "\n\n${MYSQL_ROOT_PASSWORD}\n${MYSQL_ROOT_PASSWORD}\nn\n\n\n\n" | sudo mysql_secure_installation 2>/dev/null
+echo -e "\n\n${MYSQL_ROOT_PASSWORD}\n${MYSQL_ROOT_PASSWORD}\nY\n\n\n\n" | sudo mysql_secure_installation 2>/dev/null
 
 #login into MariDB and create a user
-#database = nextclouddb
-#user = nextcloud
-#password = 
 sudo mysql -u root -p${MYSQL_ROOT_PASSWORD} <<MY_QUERY
 CREATE DATABASE nextclouddb;
 CREATE USER 'nextcloud'@'localhost' IDENTIFIED BY '${DATABASE_PASSWORD}';
@@ -57,12 +49,15 @@ FLUSH PRIVILEGES;
 MY_QUERY
 
 #setup nextcloud account
-sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextclouddb"  --database-user "nextcloud" --database-pass "${DATABASE_PASSWORD}" --admin-user "${ADMIN}" --admin-pass "${ADMIN_PASSWORD}"
+sudo -u www-data php ${NEXTCLOUD_DIRECTORY}/nextcloud/occ  maintenance:install --data-dir ${DATA_DIRECTORY} --database "mysql" --database-name "nextclouddb"  --database-user "nextcloud" --database-pass "${DATABASE_PASSWORD}" --admin-user "${ADMIN}" --admin-pass "${ADMIN_PASSWORD}"
 
 #Set SSL certificate
-echo -e "${EMAIL}\nA\nN\n${DOMAIN}" | sudo apt-get install certbot python-certbot-apache -y 2>/dev/null
+sudo apt-get install certbot python-certbot-apache -y
 
 #review
-echo -e "2\n" | sudo certbot --apache
+sudo certbot --non-interactive --redirect --apache --agree-tos -m ${EMAIL} -d ${DOMAIN}
+
+
+sudo -u www-data php /var/www/nextcloud/occ config:system:set --value=${DOMAIN} trusted_domains 0
 
 #sudo -u www-data php /var/www/nextcloud/occ files:scan --all

@@ -1,13 +1,8 @@
 #!/bin/bash
 
-echo "Installing NAS"
-exit
-
 #install samba
 #note: setup to use default
 sudo apt-get install samba -y
-
-#www-data
 
 #append share senttings to settings file
 sudo cat share_settings >> file1
