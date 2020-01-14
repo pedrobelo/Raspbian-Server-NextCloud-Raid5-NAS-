@@ -41,6 +41,10 @@ function raid5 (){
 	done
 }
 
+sudo apt-get update
+sudo apt-get install dialog -y
+sudo apt-get install hwinfo -y
+
 HEIGHT=15
 WIDTH=70
 CHOICE_HEIGHT=6
