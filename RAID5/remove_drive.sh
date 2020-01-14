@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Removing drive from array"
-exit
 
 #mark drive as faulty
 sudo mdadm /dev/md0 --fail $1

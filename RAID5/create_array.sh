@@ -3,7 +3,7 @@
 echo "Creating RAID5 array"
 
 #install raid software
-sudo apt-get install mdadm
+sudo apt-get install mdadm -y
 
 #create the array with all the disks passed as arguments
 echo -e "yes\n" | sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=$# $@ 2>/dev/null

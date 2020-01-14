@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Adding drive to array"
-exit
 
 #add drive
 sudo mdadm /dev/md0 --add $1
